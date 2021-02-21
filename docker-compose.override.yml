@@ -1,0 +1,44 @@
+version: "3.4"
+
+services:
+  mailserver:
+    image: djfarrelly/maildev
+    ports:
+      - 1080:80
+    networks:
+      - hc-network
+  webapp:
+    build:
+      context: webapp
+      target: build-and-test
+    volumes:
+      - ./webapp:/nitro-web
+    environment:
+      - NUXT_BUILD=/tmp/nuxt # avoid file permission issues when `rm -rf .nuxt/`
+      - PUBLIC_REGISTRATION=false
+    command: yarn run dev
+  backend:
+    build:
+      context: backend
+      target: build-and-test
+    volumes:
+      - ./backend:/nitro-backend
+    command: yarn run dev
+    environment:
+      - SMTP_HOST=mailserver
+      - SMTP_PORT=25
+      - SMTP_IGNORE_TLS=true
+      - "DEBUG=${DEBUG}"
+      - PUBLIC_REGISTRATION=false
+  maintenance:
+    image: humanconnection/maintenance:latest
+    build:
+      context: webapp
+      dockerfile: Dockerfile.maintenance
+    networks:
+      - hc-network
+    ports:
+      - 3503:80
+
+networks:
+  hc-network:

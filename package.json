@@ -1,0 +1,59 @@
+{
+  "name": "human-connection",
+  "version": "0.6.5",
+  "description": "Fullstack and API tests with cypress and cucumber for Human Connection",
+  "author": "Human Connection gGmbh",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Human-Connection/Human-Connection.git"
+  },
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": true
+  },
+  "scripts": {
+    "install:all": "yarn install && cd backend && yarn install && cd ../webapp && yarn install",
+    "db:seed": "cd backend && yarn run db:seed",
+    "db:reset": "cd backend && yarn run db:reset",
+    "cypress:backend": "cd backend && yarn run dev",
+    "cypress:webapp": "cd webapp && yarn run dev",
+    "cypress:setup": "run-p cypress:backend cypress:webapp",
+    "cypress:run": "cross-env cypress run --browser firefox",
+    "cypress:open": "cross-env cypress open --browser firefox",
+    "cucumber:setup": "cd backend && yarn run dev",
+    "cucumber": "wait-on tcp:4000 && cucumber-js --require-module @babel/register --exit",
+    "release": "standard-version",
+    "generate:changelog": "yarn version && auto-changelog"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "@babel/register": "^7.9.0",
+    "auto-changelog": "^1.16.4",
+    "bcryptjs": "^2.4.3",
+    "codecov": "^3.6.5",
+    "cross-env": "^7.0.2",
+    "cucumber": "^6.0.5",
+    "cypress": "^4.2.0",
+    "cypress-cucumber-preprocessor": "^2.2.1",
+    "cypress-file-upload": "^3.5.3",
+    "cypress-plugin-retries": "^1.5.2",
+    "date-fns": "^2.12.0",
+    "dotenv": "^8.2.0",
+    "expect": "^25.3.0",
+    "faker": "Marak/faker.js#master",
+    "graphql-request": "^1.8.2",
+    "import": "^0.0.6",
+    "jsonwebtoken": "^8.5.1",
+    "mock-socket": "^9.0.3",
+    "neo4j-driver": "^4.0.2",
+    "neode": "^0.3.7",
+    "npm-run-all": "^4.1.5",
+    "rosie": "^2.0.1",
+    "slug": "^2.1.1",
+    "standard-version": "^7.1.0"
+  },
+  "resolutions": {
+    "set-value": "^2.0.1"
+  }
+}
